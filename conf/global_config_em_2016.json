@@ -45,6 +45,17 @@
         "singletop": {"em": 78.8}
      },
 
+    "target_values":{
+        "ggh":       0,
+        "qqh":       1,
+        "ztt":       2,
+        "ss":        3,
+        "singletop": 4,
+        "diboson":   5,
+        "tt":        6,
+        "misc":      7
+    },
+
     "weights":["puweight*","xsec_lumi_weight*","effweight*","mcweight*","zptmassweight*","topptweight*", "trigger_filter_weight*", "qcdweight*" , "prefiring_weight", "weight_ggh_NNLOPS*", "embeddedWeight*", "embedded_stitching_weight*", "embedded_rate_weight*", "weight_ggh_NNLOPS*"],
     "shape_from_file":[],
     "shape_from_tree":["_unclMet", "_escale", "_jecUncEta0To5", "_jecUncEta0To3", "_jecUncEta3To5", "_jecUncRelativeBal", "_recoilscale", "_recoilreso"],
