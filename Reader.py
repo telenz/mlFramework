@@ -236,28 +236,42 @@ class Reader():
             # else:
             #     print "cant rename {0} to {1}".format(old, new)
 
-        if self.era == "2016":
-            DF.replace({"jdeta":-10.},-1., inplace = True)
-            DF.replace({"mjj":-10.},-11., inplace = True)
-            DF.replace({"dijetpt":-10.},-11., inplace = True)
+        if "em" in self.channel :
 
-            DF.eval("jdeta =   (njets < 2) *-1  + (njets > 1 )*jdeta ", inplace=True)
-            DF.eval("mjj =     (njets < 2) *-11 + (njets > 1 )*mjj ", inplace=True)
-            DF.eval("dijetpt = (njets < 2) *-11 + (njets > 1 )*dijetpt ", inplace=True)
-            DF.eval("jpt_1 =   (njets == 0)*-10 + (njets > 0 )*jpt_1 ", inplace=True)
-            DF.eval("jpt_2 =   (njets < 2 )*-10 + (njets > 1 )*jpt_2 ", inplace=True)
-
-
-        if self.era == "2017":
-            DF.replace({"jdeta":-1.},-10., inplace = True)
-            DF.replace({"mjj":-11.},-10., inplace = True)
-            DF.replace({"dijetpt":-11.},-10., inplace = True)
-
-            DF.eval("jdeta =   (njets < 2) *-10 + (njets > 1 )*jdeta ", inplace=True)
+            DF.eval("jdeta =   (njets < 2) *-10  + (njets > 1 )*jdeta ", inplace=True)
             DF.eval("mjj =     (njets < 2) *-10 + (njets > 1 )*mjj ", inplace=True)
             DF.eval("dijetpt = (njets < 2) *-10 + (njets > 1 )*dijetpt ", inplace=True)
             DF.eval("jpt_1 =   (njets == 0)*-10 + (njets > 0 )*jpt_1 ", inplace=True)
-            DF.eval("jpt_2 =   (njets < 2 )*-10 + (njets > 1 )*jpt_2 ", inplace=True)            
+            DF.eval("jpt_2 =   (njets < 2 )*-10 + (njets > 1 )*jpt_2 ", inplace=True)
+            DF.eval("jeta_1 =  (njets == 0)*-10 + (njets > 0 )*jeta_1 ", inplace=True)
+            DF.eval("jeta_2 =  (njets < 2 )*-10 + (njets > 1 )*jeta_2 ", inplace=True)
+            DF.eval("pt_ttjj = (njets < 2) *-10 + (njets > 1 )*pt_ttjj ", inplace=True)
+
+        else :
+
+            if self.era == "2016":
+
+                DF.replace({"jdeta":-10.},-1., inplace = True)
+                DF.replace({"mjj":-10.},-11., inplace = True)
+                DF.replace({"dijetpt":-10.},-11., inplace = True)
+
+                DF.eval("jdeta =   (njets < 2) *-1  + (njets > 1 )*jdeta ", inplace=True)
+                DF.eval("mjj =     (njets < 2) *-11 + (njets > 1 )*mjj ", inplace=True)
+                DF.eval("dijetpt = (njets < 2) *-11 + (njets > 1 )*dijetpt ", inplace=True)
+                DF.eval("jpt_1 =   (njets == 0)*-10 + (njets > 0 )*jpt_1 ", inplace=True)
+                DF.eval("jpt_2 =   (njets < 2 )*-10 + (njets > 1 )*jpt_2 ", inplace=True)
+
+            if self.era == "2017":
+                DF.replace({"jdeta":-1.},-10., inplace = True)
+                DF.replace({"mjj":-11.},-10., inplace = True)
+                DF.replace({"dijetpt":-11.},-10., inplace = True)
+
+                DF.eval("jdeta =   (njets < 2) *-10 + (njets > 1 )*jdeta ", inplace=True)
+                DF.eval("mjj =     (njets < 2) *-10 + (njets > 1 )*mjj ", inplace=True)
+                DF.eval("dijetpt = (njets < 2) *-10 + (njets > 1 )*dijetpt ", inplace=True)
+                DF.eval("jpt_1 =   (njets == 0)*-10 + (njets > 0 )*jpt_1 ", inplace=True)
+                DF.eval("jpt_2 =   (njets < 2 )*-10 + (njets > 1 )*jpt_2 ", inplace=True)
+
 
 
     def combineFolds(self, samples):
