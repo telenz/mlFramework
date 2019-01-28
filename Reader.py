@@ -245,7 +245,8 @@ class Reader():
             DF.eval("jpt_2 =   (njets < 2 )*-10 + (njets > 1 )*jpt_2 ", inplace=True)
             DF.eval("jeta_1 =  (njets == 0)*-10 + (njets > 0 )*jeta_1 ", inplace=True)
             DF.eval("jeta_2 =  (njets < 2 )*-10 + (njets > 1 )*jeta_2 ", inplace=True)
-            DF.eval("pt_ttjj = (njets < 2) *-10 + (njets > 1 )*pt_ttjj ", inplace=True)
+            if self.era == "2017" :
+                DF.eval("pt_ttjj = (njets < 2) *-10 + (njets > 1 )*pt_ttjj ", inplace=True)
 
         else :
 
