@@ -1,37 +1,39 @@
 from Reader import Reader
 import json
+import argparse
 
 def main():
 
-    samples = "conf/global_config_{0}_2016.json"
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-e', '--era',   help='Era (2016 or 2017) to use' ,choices = ['2016','2017'],  default = '2016')
+    parser.add_argument('-c', '--channel',   help='Channel to use' ,choices = ['mt','et','tt','em'],  default = 'em')
+    args = parser.parse_args()
 
+    era = args.era
+    channel = args.channel
+
+    samples = "conf/global_config_{0}_{1}.json".format(channel,era)
+    print samples
     train_weights = {}
-    for channel in ["mt","et","tt"]:
-        train_weights[channel] = getWeights(samples.format(channel), channel)
+
+    train_weights[channel] = getWeights(samples, channel, era)
 
     class_weights = {}
-    for cl in ["ztt", "zll", "misc", "tt", "w", "ss", "noniso", "ggh", "qqh"]:
+    for cl in ["ztt", "zll", "misc", "tt", "w", "ss", "noniso", "ggh", "qqh","diboson","singletop"]:
         class_weights[cl] = {}
-        for ch in ["mt","et","tt"]:
+        for ch in ["mt","et","tt","em"]:
             tmp = train_weights.get(ch,{})
             class_weights[cl][ch] = tmp.get(cl,0)
 
     for cl in class_weights:
-        print '"{0}":'.format(cl) + " "*(7-len(cl)),'{'+'"mt":{mt}, "et":{et}, "tt":{tt} '.format(**class_weights[cl])+'},'
+        print '"{0}":'.format(cl) + " "*(7-len(cl)),'{'+'"mt":{mt}, "et":{et}, "tt":{tt}, "em":{em} '.format(**class_weights[cl])+'},'
      
-        # for s in config["samples"]:
-            # if config["samples"][s]["target"] == "none": continue
 
-
-            # config["samples"][s]["train_weight_scale"][channel] = train_weights[channel][config["samples"][s]["target"][channel]]
-
-    # with open(samples,"w") as FSO:
-    #     json.dump(config, FSO, indent=2)
-
-def getWeights(samples, channel):
+def getWeights(samples, channel, era):
 
     train_weights = {}
     read = Reader(channel = channel,
+                  era = era,
                   config_file = samples,
                   folds=2)
 
