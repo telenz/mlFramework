@@ -6,24 +6,26 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-e', '--era',   help='Era (2016 or 2017) to use' ,choices = ['2016','2017'],  default = '2016')
-    parser.add_argument('-c', '--channel',   help='Channel to use' ,choices = ['mt','et','tt','em'],  default = 'em')
+    parser.add_argument('-c', '--channel', nargs='+',   help='All channels to use' ,choices = ['mt','et','tt','em'])
     args = parser.parse_args()
 
     era = args.era
-    channel = args.channel
+    channel_list = args.channel
 
-    samples = "conf/global_config_{0}_{1}.json".format(channel,era)
-    print samples
-    train_weights = {}
+    print 'considered channel(s) : ' + str(channel_list)
 
-    train_weights[channel] = getWeights(samples, channel, era)
+    for channel in channel_list:
+        samples = "conf/global_config_{0}_{1}.json".format(channel,era)
+        print samples
+        train_weights = {}
+        train_weights[channel] = getWeights(samples, channel, era)
 
-    class_weights = {}
-    for cl in ["ztt", "zll", "misc", "tt", "w", "ss", "noniso", "ggh", "qqh","diboson","singletop"]:
-        class_weights[cl] = {}
-        for ch in ["mt","et","tt","em"]:
-            tmp = train_weights.get(ch,{})
-            class_weights[cl][ch] = tmp.get(cl,0)
+        class_weights = {}
+        for cl in ["ztt", "zll", "misc", "tt", "w", "ss", "noniso", "ggh", "qqh","diboson","singletop"]:
+            class_weights[cl] = {}
+            for ch in ["mt","et","tt","em"]:
+                tmp = train_weights.get(ch,{})
+                class_weights[cl][ch] = tmp.get(cl,0)
 
     for cl in class_weights:
         print '"{0}":'.format(cl) + " "*(7-len(cl)),'{'+'"mt":{mt}, "et":{et}, "tt":{tt}, "em":{em} '.format(**class_weights[cl])+'},'
